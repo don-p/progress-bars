@@ -14,9 +14,10 @@ export class ProgressBarComponent {
 
   constructor() { }
 
-  load() {
+  load(): void {
     this.isLoading = true;
-    let interval = setInterval(() => {
+    // Simulate async loading with setInterval.
+    let interval: any = setInterval(() => {
       if(this.loaded < 100) {
         this.loaded++;
       } else {
