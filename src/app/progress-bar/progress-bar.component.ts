@@ -7,26 +7,28 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class ProgressBarComponent {
 
-  private isLoaded: boolean = false;
-  private isLoading:boolean = false;
+  private loadingState: string = null;
   private loaded: number = 0;
-  @Output() loadComplete: EventEmitter<any> = new EventEmitter();
+  private promise: Promise<any>;
 
-  constructor() { }
+  constructor() {
+
+  }
 
   load(): void {
-    this.isLoading = true;
-    // Simulate async loading with setInterval.
-    let interval: any = setInterval(() => {
-      if(this.loaded < 100) {
-        this.loaded++;
-      } else {
-        clearInterval(interval);
-        this.isLoaded = true;
-        this.isLoading = false;
-        this.loadComplete.emit(this);
-      }
-    }, 25);
+    this.promise = new Promise<any>((resolve, reject) => {
+      // Simulate async loading with setInterval.
+      this.loadingState = 'PENDING';
+      let interval: any = setInterval(() => {
+        if(this.loaded < 100) {
+          this.loaded++;
+        } else {
+          clearInterval(interval);
+          this.loadingState = 'COMPLETE';
+          resolve();
+        }
+      }, 25);
+    });
   }
 
 }
